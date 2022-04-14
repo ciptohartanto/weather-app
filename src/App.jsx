@@ -1,5 +1,7 @@
+import Typography from './components/Typography';
+
 function App() {
-  return <div>Hello!</div>;
+  return <Typography styleType="h1" text="helloooo!" />;
 }
 
 export default App;
