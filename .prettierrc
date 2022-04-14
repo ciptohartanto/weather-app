@@ -1,6 +1,10 @@
 {
-  "semi": true,
-  "tabWidth": 2,
   "printWidth": 80,
-  "trailingComma": "es5"
+  "tabWidth": 2,
+  "singleQuote": true,
+  "semi": true,
+  "trailingComma": "all",
+  "importOrderSeparation": true,
+  "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
+  "importOrderSortSpecifiers": true
 }
