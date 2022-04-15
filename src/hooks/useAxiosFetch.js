@@ -20,12 +20,10 @@ const useAxiosFetch = () => {
         cancelToken: source.token,
       });
       setweatherData(data);
-      console.log('get');
     } catch (err) {
       setFetchError(err.message);
     } finally {
       setIsLoading(false);
-      console.log('final');
     }
   };
 
