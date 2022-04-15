@@ -1,8 +1,25 @@
+import { useEffect } from 'react';
+
 import Typography, { TYPOGRAPHY_STYLES } from './components/Typography';
+import useAxiosFetch from './hooks/useAxiosFetch';
 
 function App() {
+  const { weatherData, isLoading, getNewWeatherData } = useAxiosFetch();
+
+  const handleInput = (e) => {
+    if (e.key === 'Enter') {
+      getNewWeatherData(e.target.value);
+    }
+  };
+
+  useEffect(() => {
+    console.log(weatherData);
+  }, [weatherData]);
+
   return (
     <div className="wrapper">
+      {isLoading ? <h1>yes</h1> : <h1>no</h1>}
+      <input type="text" placeholder="type" onKeyDown={handleInput} />
       <div className="app-top">
         <div className="app-text__fulldate">
           <Typography
