@@ -1,0 +1,22 @@
+.typography {
+  display: block;
+}
+
+.typography--title {
+  font-size: 40px;
+}
+.typography--subtitle {
+  font-size: 24px;
+}
+
+.typography--caption {
+  font-size: 18px;
+}
+
+.typography--subcaption {
+  font-size: 14px;
+}
+
+.typography--text {
+  font-size: 12px;
+}
