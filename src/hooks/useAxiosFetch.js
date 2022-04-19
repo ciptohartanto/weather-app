@@ -16,6 +16,7 @@ const useAxiosFetch = () => {
         params: {
           q,
           appid: process.env.REACT_APP_WEATHER_KEY,
+          units: 'metric',
         },
         cancelToken: source.token,
       });
