@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 
 import Typography, { TYPOGRAPHY_STYLES } from './components/Typography';
 import useAxiosFetch from './hooks/useAxiosFetch';
+import './styles/app.css';
+import './styles/wrapper.css';
 
 function App() {
   const { weatherData, isLoading, getNewWeatherData } = useAxiosFetch();
@@ -32,47 +34,49 @@ function App() {
   return (
     <div className="wrapper">
       <input type="text" placeholder="type" onKeyDown={handleInput} />
-      <div className="app-top">
-        <div className="app-text__fulldate">
-          <Typography
-            styleType={TYPOGRAPHY_STYLES.SUBCAPTION}
-            text={new Date().toDateString()}
-          />
+      <div className="app">
+        <div className="app-top">
+          <div className="app-text__fulldate">
+            <Typography
+              styleType={TYPOGRAPHY_STYLES.SUBCAPTION}
+              text={new Date().toDateString()}
+            />
+          </div>
+          <div className="app-text__time">
+            <Typography
+              styleType={TYPOGRAPHY_STYLES.CAPTION}
+              text={new Date().toLocaleTimeString()}
+            />
+          </div>
+          <div className="app-text__city">
+            <Typography
+              styleType={TYPOGRAPHY_STYLES.SUBCAPTION}
+              text={fetchedData.name}
+            />
+          </div>
         </div>
-        <div className="app-text__time">
-          <Typography
-            styleType={TYPOGRAPHY_STYLES.CAPTION}
-            text={new Date().toLocaleTimeString()}
-          />
+        <div className="app-middle">
+          <div className="app-text__fulldate">
+            <img
+              alt={fetchedData.weather[0].description}
+              src={`http://openweathermap.org/img/wn/${fetchedData.weather[0].icon}@2x.png`}
+            />
+          </div>
+          <div className="app-text__temp">
+            <Typography
+              styleType={TYPOGRAPHY_STYLES.TITLE}
+              text={`${fetchedData.main.temp} ${String.fromCharCode(176)}C`}
+            />
+          </div>
         </div>
-        <div className="app-text__city">
-          <Typography
-            styleType={TYPOGRAPHY_STYLES.SUBCAPTION}
-            text={fetchedData.main.temp}
-          />
-        </div>
-      </div>
-      <div className="app-middle">
-        <div className="app-text__fulldate">
-          <img
-            alt={fetchedData.weather[0].description}
-            src={`http://openweathermap.org/img/wn/${fetchedData.weather[0].icon}@2x.png`}
-          />
-        </div>
-        <div className="app-text__temp">
-          <Typography
-            styleType={TYPOGRAPHY_STYLES.CAPTION}
-            text={fetchedData.main.temp}
-          />
-        </div>
-      </div>
-      <div className="app-bottom">
-        <div className="app-text__temp">
-          <Typography
-            styleType={TYPOGRAPHY_STYLES.CAPTION}
-            text={new Date().toDateString()}
-          />
-        </div>
+        {/* <div className="app-bottom">
+          <div className="app-text__temp">
+            <Typography
+              styleType={TYPOGRAPHY_STYLES.CAPTION}
+              text={new Date().getDate()}
+            />
+          </div>
+        </div> */}
       </div>
     </div>
   );
