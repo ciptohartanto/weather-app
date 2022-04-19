@@ -13,6 +13,14 @@ function App() {
     }
   };
 
+  // const timeOfDay = () => {
+  //   let hour = new Date().getHours();
+  //   if (hour >= 4 && hour <= 11) return 'morning'; // bg: blue
+  //   if (hour >= 12 && hour <= 16) return 'afternoon'; // bg: yellow
+  //   if (hour >= 17 && hour <= 20) return 'evening'; // bg: purple
+  //   if (hour >= 21 || hour <= 3) return 'night'; // bg: dark gray
+  // };
+
   useEffect(() => {
     setFetchedData(weatherData);
   }, [weatherData]);
@@ -45,7 +53,12 @@ function App() {
         </div>
       </div>
       <div className="app-middle">
-        <div className="app-text__fulldate">{/* weather icon */}</div>
+        <div className="app-text__fulldate">
+          <img
+            alt={fetchedData.weather[0].description}
+            src={`http://openweathermap.org/img/wn/${fetchedData.weather[0].icon}@2x.png`}
+          />
+        </div>
         <div className="app-text__temp">
           <Typography
             styleType={TYPOGRAPHY_STYLES.CAPTION}
