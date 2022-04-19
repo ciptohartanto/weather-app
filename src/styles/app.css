@@ -1,0 +1,13 @@
+.app {
+  position: relative;
+  padding-top: 18px;
+}
+
+[class^='app-text__'] {
+  position: relative;
+}
+
+.app-text__time {
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
