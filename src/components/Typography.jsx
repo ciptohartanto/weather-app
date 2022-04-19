@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
 
+import '../styles/typography.css';
+
 export const TYPOGRAPHY_STYLES = {
   SUBTITLE: 'subtitle',
   TITLE: 'title',
@@ -15,11 +17,22 @@ const Typography = ({ styleType, text }) => {
   // 4. h4, subcaption -> 14px
   // 5. h5, text -> 12px
   const typoUI = useMemo(() => {
-    if (styleType === TYPOGRAPHY_STYLES.TITLE) return <h1>{text}</h1>;
-    if (styleType === TYPOGRAPHY_STYLES.SUBTITLE) return <h2>{text}</h2>;
-    if (styleType === TYPOGRAPHY_STYLES.CAPTION) return <h3>{text}</h3>;
-    if (styleType === TYPOGRAPHY_STYLES.SUBCAPTION) return <h4>{text}</h4>;
-    return <h5>{text}</h5>;
+    switch (styleType) {
+      case TYPOGRAPHY_STYLES.TITLE:
+        return <h1 className="typography typography--title">{text}</h1>;
+
+      case TYPOGRAPHY_STYLES.SUBTITLE:
+        return <h2 className="typography typography--subtitle">{text}</h2>;
+
+      case TYPOGRAPHY_STYLES.CAPTION:
+        return <h3 className="typography typography--caption">{text}</h3>;
+
+      case TYPOGRAPHY_STYLES.SUBCAPTION:
+        return <h4 className="typography typography--subcaption">{text}</h4>;
+
+      default:
+        return <h5 className="typography typography--text">{text}</h5>;
+    }
   }, [styleType]);
 
   return typoUI;
