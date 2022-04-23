@@ -1,8 +1,9 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import Typography, { TYPOGRAPHY_STYLES } from './components/Typography';
 import './styles/app.css';
+import './styles/backgrounds.css';
 import './styles/wrapper.css';
 
 function App() {
@@ -21,13 +22,15 @@ function App() {
     }
   };
 
-  // const timeOfDay = () => {
-  //   let hour = new Date().getHours();
-  //   if (hour >= 4 && hour <= 11) return 'morning'; // bg: blue
-  //   if (hour >= 12 && hour <= 16) return 'afternoon'; // bg: yellow
-  //   if (hour >= 17 && hour <= 20) return 'evening'; // bg: purple
-  //   if (hour >= 21 || hour <= 3) return 'night'; // bg: dark gray
-  // };
+  const backgroundTime = useMemo(() => {
+    const hour = new Date().getHours();
+    console.log(hour);
+    if (hour >= 4 && hour <= 11) return 'background--morning'; // bg: blue
+    if (hour >= 12 && hour <= 16) return 'background--afternoon'; // bg: yellow
+    if (hour >= 17 && hour <= 20) return 'background--evening'; // bg: purple
+    if (hour >= 21 || hour <= 3) return 'background--night'; // bg: dark gray
+    return null;
+  }, []);
 
   const getData = async (q) => {
     setIsLoading(true);
@@ -62,7 +65,7 @@ function App() {
 
   return (
     <div className="wrapper">
-      {weatherData.weather[0].description}
+      <div className={`background ${backgroundTime}`} />
       <input type="text" placeholder="type" onKeyDown={handleInput} />
       <div className="app">
         <div className="app-top">

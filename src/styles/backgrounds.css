@@ -1,0 +1,24 @@
+.background {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0.3;
+}
+
+.background--morning {
+  background-color: cornflowerblue;
+}
+
+.background--afternoon {
+  background-color: orange;
+}
+
+.background--evening {
+  background-color: purple;
+}
+
+.background-night {
+  background-color: black;
+}
