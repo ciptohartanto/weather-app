@@ -32,7 +32,7 @@ function App() {
     return null;
   }, []);
 
-  const getData = async (q) => {
+  const getWeatherData = async (q) => {
     setIsLoading(true);
     try {
       const { data } = await axios.get(`${BASE_URL}/`, {
@@ -52,7 +52,7 @@ function App() {
   };
 
   useEffect(() => {
-    getData(newCity);
+    getWeatherData(newCity);
   }, [newCity]);
 
   if (!weatherData || weatherData.length === 0 || isLoading) {
