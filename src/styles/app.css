@@ -1,11 +1,18 @@
 .app {
   position: relative;
-  padding: 18px;
+  padding: 30px;
   width: 100%;
 }
 
 [class^='app-text__'] {
   position: relative;
+}
+
+.app-top {
+  text-align: center;
+}
+.app-weatherInfo {
+  text-align: center;
 }
 
 .app-text__time {
@@ -33,6 +40,7 @@
   background-color: rgba(255, 255, 255, 0.3);
   padding: 10px;
   border-radius: 8px;
+  text-align: center;
 }
 
 .app-additionalInfoItem::after {
@@ -49,4 +57,26 @@
 
 .app-additionalInfoItem:last-child:after {
   display: none;
+}
+
+.app-sunInfo {
+  margin: 18px auto 0;
+}
+
+.app-sunInfo.grid {
+  grid-column-gap: 30px;
+}
+
+.app-sunInfoItem {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  text-align: right;
+}
+
+.app-sunInfoItem:last-child {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  text-align: left;
 }

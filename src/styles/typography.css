@@ -1,6 +1,5 @@
 .typography {
   display: block;
-  text-align: center;
 }
 
 .typography--title {
@@ -26,6 +25,7 @@
   font-size: 14px;
   opacity: 0.8;
   text-decoration: underline;
+  margin-bottom: 4px;
 }
 
 .typography--italic {

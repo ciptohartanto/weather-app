@@ -5,10 +5,13 @@ import Typography, {
   TYPOGRAPHY_ACCENTS,
   TYPOGRAPHY_STYLES,
 } from './components/Typography';
+import { ReactComponent as IconSunrise } from './icons/sunrise.svg';
+import { ReactComponent as IconSunset } from './icons/sunset.svg';
 import './styles/app.css';
 import './styles/backdrop.css';
 import './styles/backgrounds.css';
 import './styles/grid.css';
+import './styles/svgIcon.css';
 import './styles/wrapper.css';
 
 function App() {
@@ -16,7 +19,7 @@ function App() {
   const source = axios.CancelToken.source();
   const [isLoading, setIsLoading] = useState(false);
   const [fetchError, setFetchError] = useState(null);
-
+  const [isNightTime, setIsNightTime] = useState(false);
   const [weatherData, setweatherData] = useState([]);
   const [backdropImage, setBackdropImage] = useState('');
 
@@ -37,11 +40,14 @@ function App() {
     return null;
   }, []);
 
-  const whiteFontAtNight = useMemo(() => {
+  const handleNightTime = () => {
     const hour = new Date().getHours();
-    if (hour >= 21 || hour <= 3) return 'typography--white'; // bg: dark gray
-    return null;
-  });
+    if (hour >= 21 || hour <= 3) setIsNightTime(true);
+  };
+
+  const convertUnixTime = (time) => {
+    return new Date(time).toLocaleTimeString('en-US');
+  };
 
   const getBackDropImage = async (query) => {
     setIsLoading(true);
@@ -91,6 +97,7 @@ function App() {
   useEffect(() => {
     getWeatherData(newCity);
     getBackDropImage(newCity);
+    handleNightTime();
   }, [newCity]);
 
   if (!weatherData || weatherData.length === 0 || isLoading) {
@@ -108,7 +115,11 @@ function App() {
         style={{ backgroundImage: `url(${backdropImage})` }}
       />
 
-      <div className={`app background ${backgroundTime} ${whiteFontAtNight}`}>
+      <div
+        className={`app background ${backgroundTime} ${
+          isNightTime ? 'typography--white' : ''
+        }`}
+      >
         <input
           className="app-input"
           type="text"
@@ -140,45 +151,79 @@ function App() {
               text={`${weatherData.main.temp} ${String.fromCharCode(176)}C`}
             />
           </div>
-          <div className="app-additionalInfo grid grid--3">
-            <div className="grid-item app-additionalInfoItem">
-              <Typography
-                styleType={TYPOGRAPHY_STYLES.PAWN}
-                accent={TYPOGRAPHY_ACCENTS.ITALIC}
-                text="Feels Like"
-              />
+        </div>
+        <div className="app-sunInfo grid grid--2">
+          <div className="app-sunInfoItem">
+            <IconSunrise
+              fill={`${isNightTime ? '#fff' : '#000'}`}
+              className="svgIcon svgIcon--small"
+            />
+            <Typography
+              styleType={TYPOGRAPHY_STYLES.PAWN}
+              accent={TYPOGRAPHY_ACCENTS.ITALIC}
+              text="Sunrise"
+            />
 
-              <Typography
-                styleType={TYPOGRAPHY_STYLES.CAPTION}
-                text={`${weatherData.main.feels_like} ${String.fromCharCode(
-                  176,
-                )}C`}
-              />
-            </div>
-            <div className="grid-item app-additionalInfoItem">
-              <Typography
-                styleType={TYPOGRAPHY_STYLES.PAWN}
-                accent={TYPOGRAPHY_ACCENTS.ITALIC}
-                text="Pressure"
-              />
+            <Typography
+              styleType={TYPOGRAPHY_STYLES.CAPTION}
+              text={convertUnixTime(weatherData.sys.sunrise)}
+            />
+          </div>
+          <div className="app-sunInfoItem">
+            <IconSunset
+              fill={`${isNightTime ? '#fff' : '#000'}`}
+              className="svgIcon svgIcon--small"
+            />
+            <Typography
+              styleType={TYPOGRAPHY_STYLES.PAWN}
+              accent={TYPOGRAPHY_ACCENTS.ITALIC}
+              text="Sunset"
+            />
 
-              <Typography
-                styleType={TYPOGRAPHY_STYLES.CAPTION}
-                text={`${weatherData.main.pressure}`}
-              />
-            </div>
-            <div className="grid-item app-additionalInfoItem">
-              <Typography
-                styleType={TYPOGRAPHY_STYLES.PAWN}
-                accent={TYPOGRAPHY_ACCENTS.ITALIC}
-                text="Humidity"
-              />
+            <Typography
+              styleType={TYPOGRAPHY_STYLES.CAPTION}
+              text={convertUnixTime(weatherData.sys.sunset)}
+            />
+          </div>
+        </div>
+        <div className="app-additionalInfo grid grid--3">
+          <div className="grid-item app-additionalInfoItem">
+            <Typography
+              styleType={TYPOGRAPHY_STYLES.PAWN}
+              accent={TYPOGRAPHY_ACCENTS.ITALIC}
+              text="Feels Like"
+            />
 
-              <Typography
-                styleType={TYPOGRAPHY_STYLES.CAPTION}
-                text={`${weatherData.main.humidity}`}
-              />
-            </div>
+            <Typography
+              styleType={TYPOGRAPHY_STYLES.CAPTION}
+              text={`${weatherData.main.feels_like} ${String.fromCharCode(
+                176,
+              )}C`}
+            />
+          </div>
+          <div className="grid-item app-additionalInfoItem">
+            <Typography
+              styleType={TYPOGRAPHY_STYLES.PAWN}
+              accent={TYPOGRAPHY_ACCENTS.ITALIC}
+              text="Pressure"
+            />
+
+            <Typography
+              styleType={TYPOGRAPHY_STYLES.CAPTION}
+              text={`${weatherData.main.pressure}`}
+            />
+          </div>
+          <div className="grid-item app-additionalInfoItem">
+            <Typography
+              styleType={TYPOGRAPHY_STYLES.PAWN}
+              accent={TYPOGRAPHY_ACCENTS.ITALIC}
+              text="Humidity"
+            />
+
+            <Typography
+              styleType={TYPOGRAPHY_STYLES.CAPTION}
+              text={`${weatherData.main.humidity}`}
+            />
           </div>
         </div>
       </div>
