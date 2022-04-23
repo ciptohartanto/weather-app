@@ -1,25 +1,27 @@
-.background {
+.background::after {
+  content: '';
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  opacity: 0.3;
-  z-index: -5;
+  opacity: 0.8;
+  z-index: -1;
+  border-radius: 8px;
 }
 
-.background--morning {
+.background--morning::after {
   background-color: cornflowerblue;
 }
 
-.background--afternoon {
+.background--afternoon::after {
   background-color: orange;
 }
 
-.background--evening {
+.background--evening::after {
   background-color: purple;
 }
 
-.background-night {
+.background--night::after {
   background-color: black;
 }

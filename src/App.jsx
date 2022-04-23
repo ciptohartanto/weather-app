@@ -1,10 +1,14 @@
 import axios from 'axios';
 import { useEffect, useMemo, useState } from 'react';
 
-import Typography, { TYPOGRAPHY_STYLES } from './components/Typography';
+import Typography, {
+  TYPOGRAPHY_ACCENTS,
+  TYPOGRAPHY_STYLES,
+} from './components/Typography';
 import './styles/app.css';
 import './styles/backdrop.css';
 import './styles/backgrounds.css';
+import './styles/grid.css';
 import './styles/wrapper.css';
 
 function App() {
@@ -32,6 +36,12 @@ function App() {
     if (hour >= 21 || hour <= 3) return 'background--night'; // bg: dark gray
     return null;
   }, []);
+
+  const whiteFontAtNight = useMemo(() => {
+    const hour = new Date().getHours();
+    if (hour >= 21 || hour <= 3) return 'typography--white'; // bg: dark gray
+    return null;
+  });
 
   const getBackDropImage = async (query) => {
     setIsLoading(true);
@@ -97,51 +107,80 @@ function App() {
         className="backdrop"
         style={{ backgroundImage: `url(${backdropImage})` }}
       />
-      <div className={`background ${backgroundTime}`} />
-      <input type="text" placeholder="type" onKeyDown={handleInput} />
-      <div className="app">
+
+      <div className={`app background ${backgroundTime} ${whiteFontAtNight}`}>
+        <input
+          className="app-input"
+          type="text"
+          placeholder="Search a city"
+          onKeyDown={handleInput}
+        />
         <div className="app-top">
-          <div className="app-text__fulldate">
-            <Typography
-              styleType={TYPOGRAPHY_STYLES.SUBCAPTION}
-              text={new Date().toDateString()}
-            />
-          </div>
-          <div className="app-text__time">
-            <Typography
-              styleType={TYPOGRAPHY_STYLES.CAPTION}
-              text={new Date().toLocaleTimeString()}
-            />
-          </div>
-          <div className="app-text__city">
-            <Typography
-              styleType={TYPOGRAPHY_STYLES.SUBCAPTION}
-              text={`${weatherData.name} ${weatherData.sys.country}`}
-            />
-          </div>
+          <Typography
+            styleType={TYPOGRAPHY_STYLES.CAPTION}
+            text={`${weatherData.name}, ${weatherData.sys.country}`}
+          />
         </div>
-        <div className="app-middle">
-          <div className="app-text__fulldate">
+        <div className="app-weatherInfo">
+          <div className="app-weatherIcon">
             <img
               alt={weatherData.weather[0].description}
               src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
             />
           </div>
-          <div className="app-text__temp">
+          <div className="app-weatherText">
+            <Typography
+              styleType={TYPOGRAPHY_STYLES.PAWN}
+              accent={TYPOGRAPHY_ACCENTS.ITALIC}
+              text="Current Temperature"
+            />
+
             <Typography
               styleType={TYPOGRAPHY_STYLES.TITLE}
               text={`${weatherData.main.temp} ${String.fromCharCode(176)}C`}
             />
           </div>
-        </div>
-        {/* <div className="app-bottom">
-          <div className="app-text__temp">
-            <Typography
-              styleType={TYPOGRAPHY_STYLES.CAPTION}
-              text={new Date().getDate()}
-            />
+          <div className="app-additionalInfo grid grid--3">
+            <div className="grid-item app-additionalInfoItem">
+              <Typography
+                styleType={TYPOGRAPHY_STYLES.PAWN}
+                accent={TYPOGRAPHY_ACCENTS.ITALIC}
+                text="Feels Like"
+              />
+
+              <Typography
+                styleType={TYPOGRAPHY_STYLES.CAPTION}
+                text={`${weatherData.main.feels_like} ${String.fromCharCode(
+                  176,
+                )}C`}
+              />
+            </div>
+            <div className="grid-item app-additionalInfoItem">
+              <Typography
+                styleType={TYPOGRAPHY_STYLES.PAWN}
+                accent={TYPOGRAPHY_ACCENTS.ITALIC}
+                text="Pressure"
+              />
+
+              <Typography
+                styleType={TYPOGRAPHY_STYLES.CAPTION}
+                text={`${weatherData.main.pressure}`}
+              />
+            </div>
+            <div className="grid-item app-additionalInfoItem">
+              <Typography
+                styleType={TYPOGRAPHY_STYLES.PAWN}
+                accent={TYPOGRAPHY_ACCENTS.ITALIC}
+                text="Humidity"
+              />
+
+              <Typography
+                styleType={TYPOGRAPHY_STYLES.CAPTION}
+                text={`${weatherData.main.humidity}`}
+              />
+            </div>
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   );

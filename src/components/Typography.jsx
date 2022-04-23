@@ -2,17 +2,19 @@ import { useMemo, useState } from 'react';
 
 import '../styles/typography.css';
 
-// 1. h1, title -> 40px
-// 2. h2, subtitle -> 24px
-// 3. h3, caption -> 18px
-// 4. h4, subcaption -> 14px
-// 5. h5, text -> 12px
+// 1. h1, title -> 50px
+// 2. h2, subtitle -> 44px
+// 3. h3, caption -> 35px
+// 4. h4, subcaption -> 24px
+// 5. h5, text -> 18px
+// 6. span, pown -> 14px
 export const TYPOGRAPHY_STYLES = {
   SUBTITLE: 'h1',
   TITLE: 'h2',
   CAPTION: 'h3',
   SUBCAPTION: 'h4',
   TEXT: 'h5',
+  PAWN: 'span',
 };
 
 // 1. italic
@@ -55,7 +57,9 @@ const Typography = ({ styleType, text, accent }) => {
       case TYPOGRAPHY_STYLES.SUBCAPTION:
         setCssClasses(cssClasses.push('typography--subcaption'));
         break;
-
+      case TYPOGRAPHY_STYLES.PAWN:
+        setCssClasses(cssClasses.push('typography--pawn'));
+        break;
       default:
         setCssClasses(cssClasses.push('typography--text'));
     }

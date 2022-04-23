@@ -1,0 +1,12 @@
+.grid {
+  display: grid;
+}
+
+.grid--3 {
+  grid-template-columns: repeat(3, 33%);
+  grid-column-gap: 10px;
+}
+
+.grid-item {
+  position: relative;
+}

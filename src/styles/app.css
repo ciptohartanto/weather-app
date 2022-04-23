@@ -1,6 +1,7 @@
 .app {
   position: relative;
-  padding-top: 18px;
+  padding: 18px;
+  width: 100%;
 }
 
 [class^='app-text__'] {
@@ -17,8 +18,35 @@
   border-radius: 8px;
   outline: none;
   border: none;
+  margin-bottom: 18px;
 }
 
 .app-weatherIcon {
   text-align: center;
+}
+
+.app-additionalInfo {
+  width: 100%;
+  margin: auto;
+  max-width: 600px;
+  margin-top: 50px;
+  background-color: rgba(255, 255, 255, 0.3);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.app-additionalInfoItem::after {
+  content: '';
+  width: 1px;
+  height: 60%;
+  background-color: #fff;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.app-additionalInfoItem:last-child:after {
+  display: none;
 }
