@@ -21,3 +21,11 @@
 .typography--text {
   font-size: 12px;
 }
+
+.typography--italic {
+  font-style: italic;
+}
+
+.typography--bold {
+  font-weight: bold;
+}
