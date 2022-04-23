@@ -3,16 +3,18 @@ import { useEffect, useMemo, useState } from 'react';
 
 import Typography, { TYPOGRAPHY_STYLES } from './components/Typography';
 import './styles/app.css';
+import './styles/backdrop.css';
 import './styles/backgrounds.css';
 import './styles/wrapper.css';
 
 function App() {
-  const BASE_URL = `https://api.openweathermap.org/data/2.5/weather?`;
+  const BASE_WEATHER_MAP_URL = `https://api.openweathermap.org/data/2.5/weather?`;
   const source = axios.CancelToken.source();
   const [isLoading, setIsLoading] = useState(false);
   const [fetchError, setFetchError] = useState(null);
 
   const [weatherData, setweatherData] = useState([]);
+  const [backdropImage, setBackdropImage] = useState('');
 
   const [newCity, setNewCity] = useState('taipei');
 
@@ -24,7 +26,6 @@ function App() {
 
   const backgroundTime = useMemo(() => {
     const hour = new Date().getHours();
-    console.log(hour);
     if (hour >= 4 && hour <= 11) return 'background--morning'; // bg: blue
     if (hour >= 12 && hour <= 16) return 'background--afternoon'; // bg: yellow
     if (hour >= 17 && hour <= 20) return 'background--evening'; // bg: purple
@@ -32,10 +33,36 @@ function App() {
     return null;
   }, []);
 
+  const getBackDropImage = async (query) => {
+    setIsLoading(true);
+    try {
+      const { data } = await axios.get(
+        'https://api.unsplash.com/search/photos?',
+        {
+          params: {
+            query,
+            client_id: process.env.REACT_APP_UNSPLASH,
+          },
+          cancelToken: source.token,
+        },
+      );
+      // to randomize id
+      const dataLen = data.results.length;
+      const randomId = Math.random() * dataLen;
+      const id = Math.floor(randomId);
+
+      setBackdropImage(data.results[id].urls.regular);
+    } catch (err) {
+      setFetchError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const getWeatherData = async (q) => {
     setIsLoading(true);
     try {
-      const { data } = await axios.get(`${BASE_URL}/`, {
+      const { data } = await axios.get(`${BASE_WEATHER_MAP_URL}/`, {
         params: {
           q,
           appid: process.env.REACT_APP_WEATHER_KEY,
@@ -53,6 +80,7 @@ function App() {
 
   useEffect(() => {
     getWeatherData(newCity);
+    getBackDropImage(newCity);
   }, [newCity]);
 
   if (!weatherData || weatherData.length === 0 || isLoading) {
@@ -65,6 +93,10 @@ function App() {
 
   return (
     <div className="wrapper">
+      <div
+        className="backdrop"
+        style={{ backgroundImage: `url(${backdropImage})` }}
+      />
       <div className={`background ${backgroundTime}`} />
       <input type="text" placeholder="type" onKeyDown={handleInput} />
       <div className="app">
