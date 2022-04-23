@@ -1,17 +1,23 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 import Typography, { TYPOGRAPHY_STYLES } from './components/Typography';
-import useAxiosFetch from './hooks/useAxiosFetch';
 import './styles/app.css';
 import './styles/wrapper.css';
 
 function App() {
-  const { weatherData, isLoading, getNewWeatherData } = useAxiosFetch();
-  const [fetchedData, setFetchedData] = useState(weatherData);
+  const BASE_URL = `https://api.openweathermap.org/data/2.5/weather?`;
+  const source = axios.CancelToken.source();
+  const [isLoading, setIsLoading] = useState(false);
+  const [fetchError, setFetchError] = useState(null);
+
+  const [weatherData, setweatherData] = useState([]);
+
+  const [newCity, setNewCity] = useState('taipei');
 
   const handleInput = (e) => {
     if (e.key === 'Enter') {
-      getNewWeatherData(e.target.value);
+      setNewCity(e.target.value);
     }
   };
 
@@ -23,16 +29,40 @@ function App() {
   //   if (hour >= 21 || hour <= 3) return 'night'; // bg: dark gray
   // };
 
-  useEffect(() => {
-    setFetchedData(weatherData);
-  }, [weatherData]);
+  const getData = async (q) => {
+    setIsLoading(true);
+    try {
+      const { data } = await axios.get(`${BASE_URL}/`, {
+        params: {
+          q,
+          appid: process.env.REACT_APP_WEATHER_KEY,
+          units: 'metric',
+        },
+        cancelToken: source.token,
+      });
+      setweatherData(data);
+    } catch (err) {
+      setFetchError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  if (!fetchedData || fetchedData.length === 0 || isLoading) {
+  useEffect(() => {
+    getData(newCity);
+  }, [newCity]);
+
+  if (!weatherData || weatherData.length === 0 || isLoading) {
     return <div>LOADING</div>;
+  }
+
+  if (fetchError) {
+    return <div>error</div>;
   }
 
   return (
     <div className="wrapper">
+      {weatherData.weather[0].description}
       <input type="text" placeholder="type" onKeyDown={handleInput} />
       <div className="app">
         <div className="app-top">
@@ -51,21 +81,21 @@ function App() {
           <div className="app-text__city">
             <Typography
               styleType={TYPOGRAPHY_STYLES.SUBCAPTION}
-              text={fetchedData.name}
+              text={`${weatherData.name} ${weatherData.sys.country}`}
             />
           </div>
         </div>
         <div className="app-middle">
           <div className="app-text__fulldate">
             <img
-              alt={fetchedData.weather[0].description}
-              src={`http://openweathermap.org/img/wn/${fetchedData.weather[0].icon}@2x.png`}
+              alt={weatherData.weather[0].description}
+              src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
             />
           </div>
           <div className="app-text__temp">
             <Typography
               styleType={TYPOGRAPHY_STYLES.TITLE}
-              text={`${fetchedData.main.temp} ${String.fromCharCode(176)}C`}
+              text={`${weatherData.main.temp} ${String.fromCharCode(176)}C`}
             />
           </div>
         </div>
